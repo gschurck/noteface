@@ -4,7 +4,8 @@
     Dim ofdFile As New OpenFileDialog
     Dim selectedPath As String
     Dim saveState As Boolean = False
-
+    Dim csvPath As String
+    Dim csvName As String
     Public Sub ImagePicker()
         If ofdFile.ShowDialog = DialogResult.OK Then
             ' get the file name (without the path)
@@ -22,6 +23,9 @@
         PictureBox1.Image = Image.FromFile(filePath)
         imageGroupBox.Text = fileName
         'imageName.Text = fileName
+        Dim myBitmap As New Bitmap(filePath)
+        Dim pixelColor As Color = myBitmap.GetPixel(50, 50)
+        Me.BackColor = pixelColor
     End Sub
 
     Private Sub newPicButton_Click(sender As Object, e As EventArgs) Handles newPicButton.Click
@@ -75,8 +79,12 @@
     End Sub
 
     Private Sub FilePathButton_Click(sender As Object, e As EventArgs) Handles FilePathButton.Click
-        ChooseFolder()
-        MsgBox(selectedPath)
+        If ofdFile.ShowDialog = DialogResult.OK Then
+            csvName = ofdFile.SafeFileName()
+            csvPath = ofdFile.FileName()
+            Me.Show()
+        End If
+        MsgBox(csvPath)
     End Sub
 
     Private Sub SaveButton_Click(sender As Object, e As EventArgs) Handles SaveButton.Click
